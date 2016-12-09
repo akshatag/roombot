@@ -93,15 +93,15 @@ function parseAction(event) {
   var senderId = event.sender.id;
   var recipientId = event.recipient.id;
   var timestamp = event.timestamp;
-  var message = event.message;
+  var text = event.message.text;
 
   // not an action event
-  if (!message.startsWith('$')) {
+  if (!text.startsWith('$')) {
     return;
   }
 
   // parse event message for intended action
-  if (message.startsWith('$new-room')) {
+  if (text.startsWith('$new-room')) {
     sendText(senderId, 'Made a new room!');
   } else {
     sendText(senderId, 'help?');
