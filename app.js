@@ -15,7 +15,7 @@ function receivedMessage(event) {
   var timestamp = event.timestamp;
   var message = event.message;
   // var messageID = message.mid;
-  sendTextMessage(senderID, "Hi, I am Roombot");
+  sendTextMessage(senderID, "Hi, I am roombot");
 }
 
 function sendTextMessage(recipientId, messageText) {
