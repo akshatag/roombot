@@ -1,13 +1,48 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
-var app = express();
-var VERIFY_TOKEN = "EAAJO13fRAZAgBADW2HG59i9BCdfrOxKr5nu4zFNKOsqOqjg4dLBq7r44wiRylJHMbGLwvexVVbe28TJcREZBZCXy6cNgXRc7T0EmYDdAgZAiqhuc0ZBTtYTSPSrZAj5GFnqMVh8HIAm8DXE7ySvPBmHrOUVxtKITMpNDNas9mDZBAZDZD";
+var mongoDB = require('mongodb');
 
+var DATABASE_URL = 'mongodb://ds129028.mlab.com:29028/roombot';
+var VERIFY_TOKEN = 'EAAJO13fRAZAgBADW2HG59i9BCdfrOxKr5nu4zFNKOsqOqjg4dLBq7r44wiRylJHMbGLwvexVVbe28TJcREZBZCXy6cNgXRc7T0EmYDdAgZAiqhuc0ZBTtYTSPSrZAj5GFnqMVh8HIAm8DXE7ySvPBmHrOUVxtKITMpNDNas9mDZBAZDZD';
+var DATABASE_USERNAME = 'admin';
+var DATABASE_PASSWORD = 'root'
+
+/** CONNECT TO DATABASE **/
+var mongoCL = mongoDB.MongoClient;
+var db;
+
+mongoCL.connect(DATABASE_URL, function (err, db) {
+  if (err) {
+    console.log('Unable to connect to mongoDB. Err: ', err);
+  } else {
+    console.log('Connection established to ', DATABASE_URL);
+    this.db = db;
+
+    db.authenticate(DATABASE_USERNAME, DATABASE_PASSWORD, function (err, res) {
+      if (err) {
+        console.log('Unable to authenticate db. Err: ', err);
+      }
+
+      var cursor = db.collection('rooms').find({name: '3934sansom'});
+      cursor.toArray(function (err, docs) {
+        if (err) {
+          console.log(err);
+        }
+        console.log(docs);
+      });
+    });
+  }
+});
+
+/** MESSENGER BOT WEBHOOK **/
+var app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
+
+
 
 function receivedMessage(event) {
   var senderID = event.sender.id;
@@ -15,6 +50,7 @@ function receivedMessage(event) {
   var timestamp = event.timestamp;
   var message = event.message;
   // var messageID = message.mid;
+
   sendTextMessage(senderID, "Hi, I am roombot");
 }
 
