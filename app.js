@@ -14,7 +14,7 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timestamp = event.timestamp;
   var message = event.message;
-  var messageID = message.mid;
+  // var messageID = message.mid;
   sendTextMessage(senderID, "Hi, I am Roombot");
 }
 
@@ -37,7 +37,6 @@ function callSendAPI(message) {
     qs: { access_token: VERIFY_TOKEN },
     method: 'POST',
     json: messageData
-
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
@@ -84,6 +83,7 @@ app.post('/webhook', function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("ABOUT TO INITIATE MESSAGE SEND");
+          console.log(event);
           receivedMessage(event);
         } else {
           console.log("Webhook received unknown event: ", event);
