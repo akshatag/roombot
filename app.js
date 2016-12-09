@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
-var sendMessage = function() {
+var sendMessage = function(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timestamp = event.timestamp;
@@ -23,6 +23,8 @@ app.get('/', function(req, res) {
 })
 
 app.post('/webhook', function (req, res) {
+  res.sendStatus(200);
+
   var data = req.body;
   data.entry.forEach(function(entry) {
     entry.messaging.forEach(function(event) {
@@ -32,7 +34,4 @@ app.post('/webhook', function (req, res) {
       }
     });
   });
-
-  res.sendStatus(200);
-
 });
