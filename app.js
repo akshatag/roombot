@@ -59,7 +59,7 @@ function sendAttachment(recipientId, attachment) {
   var messageData = {
     recipient: {
       id: recipientId
-    }
+    },
     message: {
       attachment: attachment
     }
