@@ -104,9 +104,11 @@ function parseAction(event) {
   if (text.startsWith('$new-room')) {
     sendText(senderId, 'Alright give me a sec');
     var room  = {name: 'room'};
-    this.db.collections('rooms').insert(room, function(err, res) {
+    this.db.collections('rooms').insert([room], function(err, res) {
       if (err){
         console.log('Could not write to db. Err: ', err);
+      } else {
+        console.log('SUCCESS WRITING TO DB');
       }
     });;
   } else {
