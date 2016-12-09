@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
-var sendMessage = function(event) {
+var receivedMessage = function(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timestamp = event.timestamp;
@@ -18,6 +18,41 @@ var sendMessage = function(event) {
 
   sendTextMessage(senderID, "Hi, I am Roombot");
 }
+
+function sendTextMessage(recipientId, messageText) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: messageText
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
+
+function callSendAPI(message) {
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: VERIFY_TOKEN },
+    method: 'POST',
+    json: messageData
+
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var recipientId = body.recipient_id;
+      var messageId = body.message_id;
+
+      console.log("Successfully sent generic message with id %s to recipient %s",
+        messageId, recipientId);
+    } else {
+      console.error("Unable to send message.");
+      console.error(response);
+      console.error(error);
+    }
+  });
 
 app.get('/', function(req, res) {
   res.send('I am roombot');
@@ -63,3 +98,6 @@ app.post('/webhook', function (req, res) {
     res.sendStatus(200);
   }
 });
+
+
+}
