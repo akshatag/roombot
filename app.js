@@ -24,7 +24,7 @@ mongoCL.connect(DATABASE_URL, function (err, db) {
         console.log('Unable to authenticate db. Err: ', err);
       }
 
-      var cursor = db.collection('rooms').find({name: '3934sansom'});
+      var cursor = this.db.collection('rooms').find({name: '3934sansom'});
       cursor.toArray(function (err, docs) {
         if (err) {
           console.log(err);
@@ -102,7 +102,9 @@ function parseAction(event) {
 
   // parse event message for intended action
   if (text.startsWith('$new-room')) {
-    sendText(senderId, 'Made a new room!');
+    sendText(senderId, 'Alright give me a sec');
+    var room  = {name: 'room'};
+    this.db.collections('rooms').insert(room);
   } else {
     sendText(senderId, 'help?');
   }
@@ -124,9 +126,9 @@ app.get('/', function(req, res) {
   res.send('I am roombot');
 });
 
+/** AUTHENTICATE WEBOOK **/
 app.get('/webhook', function(req, res) {
-  if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === VERIFY_TOKEN) {
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VERIFY_TOKEN) {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
   } else {
@@ -135,6 +137,8 @@ app.get('/webhook', function(req, res) {
   }
 });
 
+
+/** MAIN ENDPOINT FOR MESSENGER BOT **/
 app.post('/webhook', function (req, res) {
   var data = req.body;
 
@@ -143,14 +147,12 @@ app.post('/webhook', function (req, res) {
 
     // Iterate over each entry - there may be multiple if batched
     data.entry.forEach(function(entry) {
-      var pageID = entry.id;
-      var timeOfEvent = entry.time;
+      var pageId = entry.id;
+      var timestamp = entry.time;
 
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
         if (event.message) {
-          console.log("ABOUT TO INITIATE MESSAGE SEND");
-          console.log(event);
           parseAction(event);
         } else {
           console.log("Webhook received unknown event: ", event);
@@ -158,11 +160,6 @@ app.post('/webhook', function (req, res) {
       });
     });
 
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know
-    // you've successfully received the callback. Otherwise, the request
-    // will time out and we will keep trying to resend.
     res.sendStatus(200);
   }
 });
