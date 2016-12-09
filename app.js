@@ -105,8 +105,8 @@ function parseAction(event) {
 
   // parse event message for intended action
   if (text.startsWith('$new-room')) {
-    sendText(senderId, 'Alright give me a sec');
-    var room  = {name: args[1]};
+    sendText(senderId, args[0]);
+    var room  = {name: args[0]};
     this.db.collection('rooms').insert([room], function(err, res) {
       if (err){
         console.log('Could not write to db. Err: ', err);
