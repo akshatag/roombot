@@ -32,7 +32,6 @@ function sendTextMessage(recipientId, messageText) {
   callSendAPI(messageData);
 }
 
-
 function callSendAPI(message) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
@@ -53,10 +52,12 @@ function callSendAPI(message) {
       console.error(error);
     }
   });
+}
+
 
 app.get('/', function(req, res) {
   res.send('I am roombot');
-})
+});
 
 app.get('/webhook', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
@@ -99,6 +100,3 @@ app.post('/webhook', function (req, res) {
     res.sendStatus(200);
   }
 });
-
-
-}
