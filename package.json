@@ -1,0 +1,24 @@
+{
+  "name": "roombot",
+  "version": "1.0.0",
+  "description": "Roombot Server App",
+  "main": "webhook.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akshatag/roombot.git"
+  },
+  "author": "Akshat Agrawal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akshatag/roombot/issues"
+  },
+  "homepage": "https://github.com/akshatag/roombot",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "request": "^2.79.0"
+  }
+}
