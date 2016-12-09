@@ -100,10 +100,13 @@ function parseAction(event) {
     return;
   }
 
+  var tokens = text.split(' ');
+  var args = tokens.slice(1, -1);
+
   // parse event message for intended action
   if (text.startsWith('$new-room')) {
     sendText(senderId, 'Alright give me a sec');
-    var room  = {name: 'room'};
+    var room  = {name: args[1]};
     this.db.collection('rooms').insert([room], function(err, res) {
       if (err){
         console.log('Could not write to db. Err: ', err);
