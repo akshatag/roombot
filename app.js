@@ -42,19 +42,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
-
-
-function receivedMessage(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timestamp = event.timestamp;
-  var message = event.message;
-  // var messageID = message.mid;
-
-  sendTextMessage(senderID, "Hi, I am roombot");
-}
-
-function sendTextMessage(recipientId, messageText) {
+function sendText(recipientId, messageText) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -67,8 +55,21 @@ function sendTextMessage(recipientId, messageText) {
   callSendAPI(messageData);
 }
 
+function sendAttachment(recipientId, attachment) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    }
+    message: {
+      attachment: attachment
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
+
 function callSendAPI(message) {
-  console.log("ABOUT TO SEND THE API REQUEST");
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: VERIFY_TOKEN },
@@ -78,8 +79,7 @@ function callSendAPI(message) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
       var messageId = body.message_id;
-
-      console.log("Successfully sent generic message with id %s to recipient %s",
+      console.log("Sent message with id %s to recipient %s",
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
@@ -89,6 +89,36 @@ function callSendAPI(message) {
   });
 }
 
+function parseAction(event) {
+  var senderId = event.sender.id;
+  var recipientId = event.recipient.id;
+  var timestamp = event.timestamp;
+  var message = event.message;
+
+  // not an action event
+  if (!message.startsWith('$')) {
+    return;
+  }
+
+  // parse event message for intended action
+  if (message.startsWith('$new-room')) {
+    sendText(senderId, 'Made a new room!');
+  } else {
+    sendText(senderId, 'help?');
+  }
+}
+
+function buttonAttachment(text, buttons) {
+  var attachment = {
+    type: 'template',
+    payload: {
+      template_type : 'button',
+      text: text,
+      buttons: buttons
+    }
+  }
+  return attachment;
+}
 
 app.get('/', function(req, res) {
   res.send('I am roombot');
@@ -121,7 +151,7 @@ app.post('/webhook', function (req, res) {
         if (event.message) {
           console.log("ABOUT TO INITIATE MESSAGE SEND");
           console.log(event);
-          receivedMessage(event);
+          parseAction(event);
         } else {
           console.log("Webhook received unknown event: ", event);
         }
