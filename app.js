@@ -100,13 +100,14 @@ function parseAction(event) {
     return;
   }
 
-  var tokens = text.split(' ');
+  var tokens = text.split(/(\s+)/);
   var args = tokens.slice(1, -1);
   console.log('HERE ARE THE TOKENS: ', tokens);
   console.log('HERE ARE THE ARGS: ', args);
 
   // parse event message for intended action
   if (text.startsWith('$new-room')) {
+    console.log('PLEASE PRINT THIS OUT');
     sendText(senderId, args[0]);
     var room  = {name: args[0]};
     this.db.collection('rooms').insert([room], function(err, res) {
