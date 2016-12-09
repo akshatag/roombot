@@ -32,6 +32,7 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function callSendAPI(message) {
+  console.log("ABOUT TO SEND THE API REQUEST");
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: VERIFY_TOKEN },
