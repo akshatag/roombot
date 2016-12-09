@@ -22,9 +22,8 @@ app.get('/', function(req, res) {
   res.send('I am roombot');
 })
 
-app.get('/webhook', function (req, res) {
+app.post('/webhook', function (req, res) {
   var data = req.body;
-
   data.entry.forEach(function(entry) {
     entry.messaging.forEach(function(event) {
       if(event.message) {
