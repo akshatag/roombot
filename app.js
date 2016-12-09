@@ -115,7 +115,7 @@ function parseAction(event) {
     case '$details':
       break;
     default:
-      sendText('help?');
+      sendText(senderId, 'help?');
   }
 
 }
