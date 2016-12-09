@@ -36,7 +36,7 @@ function callSendAPI(message) {
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: VERIFY_TOKEN },
     method: 'POST',
-    json: messageData
+    json: message
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
