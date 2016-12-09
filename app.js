@@ -10,6 +10,7 @@ var DATABASE_PASSWORD = 'root'
 
 /** CONNECT TO DATABASE **/
 var mongoCL = mongoDB.MongoClient;
+var dbActions;
 var db;
 
 mongoCL.connect(DATABASE_URL, function (err, db) {
@@ -23,6 +24,9 @@ mongoCL.connect(DATABASE_URL, function (err, db) {
       if (err) {
         console.log('Unable to authenticate db. Err: ', err);
       }
+
+      this.dbActions = require('./actions.js')(db);
+      this.dbActions;
 
       var cursor = this.db.collection('rooms').find({name: '3934sansom'});
       cursor.toArray(function (err, docs) {
@@ -102,24 +106,18 @@ function parseAction(event) {
 
   var tokens = text.split(' ');
   var args = tokens.slice(1);
-  console.log('HERE ARE THE TOKENS: ', tokens);
-  console.log('HERE ARE THE ARGS: ', args);
+  var command = tokens[0];
 
-  // parse event message for intended action
-  if (text.startsWith('$new-room')) {
-    console.log('PLEASE PRINT THIS OUT');
-    sendText(senderId, args[0]);
-    var room  = {name: args[0]};
-    this.db.collection('rooms').insert([room], function(err, res) {
-      if (err){
-        console.log('Could not write to db. Err: ', err);
-      } else {
-        console.log('SUCCESS WRITING TO DB');
-      }
-    });;
-  } else {
-    sendText(senderId, 'help?');
+  switch (command) {
+    case '$new-room':
+      this.dbActions.writeNewRoom(args[0]);
+      break;
+    case '$details':
+      break;
+    default:
+      sendText('help?');
   }
+
 }
 
 function buttonAttachment(text, buttons) {
