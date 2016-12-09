@@ -1,5 +1,5 @@
 var express = require('express');
-var bodyParser = requore('body-parser');
+var bodyParser = require('body-parser');
 var request = require('request');
 var app = express();
 
@@ -18,11 +18,14 @@ var sendMessage = function() {
   sendTextMessage(senderID, "Hi, I am Roombot");
 }
 
+app.get('/', function(req, res) {
+  res.send('I am roombot');
+})
 
 app.get('/webhook', function (req, res) {
   var data = req.body;
 
-  data.entry.forEach(funtion(entry) {
+  data.entry.forEach(function(entry) {
     entry.messaging.forEach(function(event) {
       if(event.message) {
         console.log('received message');
@@ -30,7 +33,7 @@ app.get('/webhook', function (req, res) {
       }
     });
   });
-  
+
   res.sendStatus(200);
 
 });
