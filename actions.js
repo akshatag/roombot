@@ -1,6 +1,6 @@
 var make = function(db) {
 
-  var actions = {};
+  var actions = {db: db};
 
   actions.writeNewRoom = function(name) {
     var room  = {name: name};
