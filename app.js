@@ -100,8 +100,8 @@ function parseAction(event) {
     return;
   }
 
-  var tokens = text.split(/(\s+)/);
-  var args = tokens.slice(1, -1);
+  var tokens = text.split(' ');
+  var args = tokens.slice(1);
   console.log('HERE ARE THE TOKENS: ', tokens);
   console.log('HERE ARE THE ARGS: ', args);
 
