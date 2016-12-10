@@ -402,13 +402,7 @@ function sendAttachment(recipientId, attachment) {
                      ]
                  }
              ],
-              "buttons": [
-                 {
-                     "title": "View More",
-                     "type": "postback",
-                     "payload": "payload"
-                 }
-             ]
+              "buttons": []
          }
      }
   }
