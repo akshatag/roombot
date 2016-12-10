@@ -21,6 +21,7 @@ var make = function(db) {
       if (err) {
         console.log('DB encountered error. Err: '. err);
       }
+      console.log('FETCHED THE DOC: ', JSON.stringify(doc));
       return JSON.stringify(doc);
     });
   }
