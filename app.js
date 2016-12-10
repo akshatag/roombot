@@ -74,7 +74,7 @@ function parseAction(event) {
       break;
     case '$tasks':
       this.dbActions.viewRoom(args[0], function(err, doc) {
-        tasks = JSON.stringify(docs.tasks);
+        tasks = JSON.stringify(doc.tasks);
         sendText(senderId, tasks);
       });
       break;
