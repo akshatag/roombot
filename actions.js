@@ -21,9 +21,7 @@ var make = function(db) {
       if (err) {
         console.log('DB encountered error. Err: '. err);
       }
-      var room = JSON.stringify(doc);
-      console.log('FOUND THE ROOM: ', room);
-      return room;
+      return JSON.stringify(doc);
     });
   }
 

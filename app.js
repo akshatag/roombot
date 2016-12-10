@@ -67,7 +67,10 @@ function parseAction(event) {
       this.dbActions.writeNewRoom(args[0]);
       break;
     case '$details':
-      sendText(senderId, this.dbActions.viewRoom('3934sansom'));
+      sendText(senderId, 'Getting the room');
+      var room = this.dbActions.viewRoom('3934sansom');
+      console.log('FOUND THE ROOM: ', room);
+      sendText(senderId, room);
       break;
     default:
       sendText(senderId, 'help?');
