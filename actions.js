@@ -18,8 +18,8 @@ var make = function(db) {
   actions.viewRoom = function(roomName) {
     console.log('LOOKING FOR ROOM w ROOMNAME: ', roomName);
     this.db.collection('rooms').findOne({name: roomName}, function (err, doc) {
-          console.log('HERES THE ROOM: ', room);
-          return JSON.stringify(room);
+          console.log('HERES THE ROOM: ', doc);
+          return JSON.stringify(doc);
     });
   }
 
