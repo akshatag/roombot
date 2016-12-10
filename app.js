@@ -65,7 +65,7 @@ function parseAction(event) {
       this.dbActions.writeNewRoom(args[0]);
       break;
     case '$details':
-      this.dbActions.viewRoom(args[0]);
+      sendText(senderId, this.dbActions.viewRoom(args[0]));
       break;
     default:
       sendText(senderId, 'help?');

@@ -16,6 +16,7 @@ var make = function(db) {
   }
 
   actions.viewRoom = function(roomName) {
+    console.log('LOOKING FOR ROOM w ROOMNAME: ', roomName);
     room = this.db.collection('rooms').find({name: roomName}).toArray[0];
     return JSON.stringify(room);
   }
