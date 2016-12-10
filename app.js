@@ -26,7 +26,6 @@ mongoCL.connect(DATABASE_URL, function (err, db) {
       }
 
       this.dbActions = require('./actions.js')(db);
-      this.dbActions;
 
       var cursor = this.db.collection('rooms').find({name: '3934sansom'});
       cursor.toArray(function (err, docs) {
@@ -45,6 +44,88 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
+
+function parseAction(event) {
+  var senderId = event.sender.id;
+  var recipientId = event.recipient.id;
+  var timestamp = event.timestamp;
+  var text = event.message.text;
+
+  // not an action event
+  if (!text.startsWith('$')) {
+    return;
+  }
+
+  var tokens = text.split(' ');
+  var args = tokens.slice(1);
+  var command = tokens[0];
+
+  switch (command) {
+    case '$new-room':
+      this.dbActions.writeNewRoom(args[0]);
+      break;
+    case '$details':
+      this.dbActions.viewRoom(args[0]);
+      break;
+    default:
+      sendText(senderId, 'help?');
+  }
+
+}
+
+function buttonAttachment(text, buttons) {
+  var attachment = {
+    type: 'template',
+    payload: {
+      template_type : 'button',
+      text: text,
+      buttons: buttons
+    }
+  }
+  return attachment;
+}
+
+/** TEST IF THE APP IS UP **/
+app.get('/', function(req, res) {
+  res.send('I am roombot');
+});
+
+/** AUTHENTICATE WEBOOK **/
+app.get('/webhook', function(req, res) {
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VERIFY_TOKEN) {
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);
+  }
+});
+
+/** MAIN ENDPOINT FOR MESSENGER BOT **/
+app.post('/webhook', function (req, res) {
+  var data = req.body;
+
+  // Make sure this is a page subscription
+  if (data.object === 'page') {
+
+    // Iterate over each entry - there may be multiple if batched
+    data.entry.forEach(function(entry) {
+      var pageId = entry.id;
+      var timestamp = entry.time;
+
+      // Iterate over each messaging event
+      entry.messaging.forEach(function(event) {
+        if (event.message) {
+          parseAction(event);
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
+      });
+    });
+
+    res.sendStatus(200);
+  }
+});
 
 function sendText(recipientId, messageText) {
   var messageData = {
@@ -72,7 +153,6 @@ function sendAttachment(recipientId, attachment) {
   callSendAPI(messageData);
 }
 
-
 function callSendAPI(message) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
@@ -92,84 +172,3 @@ function callSendAPI(message) {
     }
   });
 }
-
-function parseAction(event) {
-  var senderId = event.sender.id;
-  var recipientId = event.recipient.id;
-  var timestamp = event.timestamp;
-  var text = event.message.text;
-
-  // not an action event
-  if (!text.startsWith('$')) {
-    return;
-  }
-
-  var tokens = text.split(' ');
-  var args = tokens.slice(1);
-  var command = tokens[0];
-
-  switch (command) {
-    case '$new-room':
-      this.dbActions.writeNewRoom(args[0]);
-      break;
-    case '$details':
-      break;
-    default:
-      sendText(senderId, 'help?');
-  }
-
-}
-
-function buttonAttachment(text, buttons) {
-  var attachment = {
-    type: 'template',
-    payload: {
-      template_type : 'button',
-      text: text,
-      buttons: buttons
-    }
-  }
-  return attachment;
-}
-
-app.get('/', function(req, res) {
-  res.send('I am roombot');
-});
-
-/** AUTHENTICATE WEBOOK **/
-app.get('/webhook', function(req, res) {
-  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VERIFY_TOKEN) {
-    console.log("Validating webhook");
-    res.status(200).send(req.query['hub.challenge']);
-  } else {
-    console.error("Failed validation. Make sure the validation tokens match.");
-    res.sendStatus(403);
-  }
-});
-
-
-/** MAIN ENDPOINT FOR MESSENGER BOT **/
-app.post('/webhook', function (req, res) {
-  var data = req.body;
-
-  // Make sure this is a page subscription
-  if (data.object === 'page') {
-
-    // Iterate over each entry - there may be multiple if batched
-    data.entry.forEach(function(entry) {
-      var pageId = entry.id;
-      var timestamp = entry.time;
-
-      // Iterate over each messaging event
-      entry.messaging.forEach(function(event) {
-        if (event.message) {
-          parseAction(event);
-        } else {
-          console.log("Webhook received unknown event: ", event);
-        }
-      });
-    });
-
-    res.sendStatus(200);
-  }
-});

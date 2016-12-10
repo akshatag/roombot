@@ -11,6 +11,15 @@ var make = function(db) {
     });
   }
 
+  actions.updateRoom = function(roomId, roomAttrs) {
+    this.db.collection('rooms').update({id: roomId}, {$set: roomAttrs});
+  }
+
+  actions.viewRoom = function(roomName) {
+    room = this.db.collection('rooms').find({name: roomName}).toArray[0];
+    return JSON.stringify(room);
+  }
+
   return actions;
 };
 
