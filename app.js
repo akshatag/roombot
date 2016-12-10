@@ -68,8 +68,14 @@ function parseAction(event) {
       break;
     case '$details':
       sendText(senderId, args[0]);
-      var room = this.dbActions.viewRoom(args[0], function(err, doc) {
+      this.dbActions.viewRoom(args[0], function(err, doc) {
         sendText(senderId, JSON.stringify(doc));
+      });
+      break;
+    case '$tasks':
+      this.dbActions.viewRoom(args[0], function(err, doc) {
+        tasks = JSON.stringify(docs.tasks);
+        sendText(senderId, tasks);
       });
       break;
     default:
