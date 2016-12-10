@@ -97,6 +97,7 @@ function expensesAttachment(expenses) {
     type: 'template',
     payload: {
       template_type: 'list',
+      top_element_style: 'compact',
       elements: []
     },
     buttons: [
@@ -189,7 +190,7 @@ function sendText(recipientId, messageText) {
 }
 
 function sendAttachment(recipientId, attachment) {
-  console.log('WE MADE IT');
+  console.log('WE MADE IT ', JSON.stringify(attachment));
   var messageData = {
     recipient: {
       id: recipientId
