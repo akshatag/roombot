@@ -78,10 +78,45 @@ function parseAction(event) {
         sendText(senderId, tasks);
       });
       break;
+    case '$expenses':
+      this.dbActions.viewRoom(args[0], function(err, doc) {
+        expenses = doc.expenses;
+        sendAttachment(senderId, expensesAttachment(expenses));
+      });
+      break;
     default:
       sendText(senderId, 'help?');
   }
 
+}
+
+
+function expensesAttachment(expenses) {
+  var attachment = {
+    type: 'template',
+    payload: {
+      template_type: 'list',
+      elements: []
+    },
+    buttons: [
+      {
+        title: 'View More',
+        type: 'postback',
+        payload: 'payload'
+      }
+    ]
+  }
+
+  expenses.forEach(function(element) {
+    var expense = {
+      title: element.title,
+      subtitle: element.amount,
+      image_url: element.author
+    };
+    attachment.payload.elements.push(expense);
+  });
+
+  return attachment;
 }
 
 function buttonAttachment(text, buttons) {
