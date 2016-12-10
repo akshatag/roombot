@@ -15,15 +15,9 @@ var make = function(db) {
     this.db.collection('rooms').update({id: roomId}, {$set: roomAttrs});
   }
 
-  actions.viewRoom = function(roomName) {
+  actions.viewRoom = function(roomName, callback) {
     console.log('LOOKING FOR ROOM w ROOMNAME: ', roomName);
-    this.db.collection('rooms').findOne({name: roomName}, function (err, doc) {
-      if (err) {
-        console.log('DB encountered error. Err: '. err);
-      }
-      console.log('FETCHED THE DOC: ', JSON.stringify(doc));
-      return JSON.stringify(doc);
-    });
+    this.db.collection('rooms').findOne({name: roomName}, callback);
   }
 
   return actions;

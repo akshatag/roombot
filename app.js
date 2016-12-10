@@ -68,9 +68,9 @@ function parseAction(event) {
       break;
     case '$details':
       sendText(senderId, 'Getting the room');
-      var room = this.dbActions.viewRoom('3934sansom');
-      console.log('FOUND THE ROOM: ', room);
-      sendText(senderId, room);
+      var room = this.dbActions.viewRoom('3934sansom', function(err, doc) {
+        sendText(senderId, JSON.stringify(doc));
+      });
       break;
     default:
       sendText(senderId, 'help?');
