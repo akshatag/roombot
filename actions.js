@@ -17,14 +17,14 @@ var make = function(db) {
 
   actions.viewRoom = function(roomName) {
     console.log('LOOKING FOR ROOM w ROOMNAME: ', roomName);
-    var res = this.db.collection('rooms').find({name: roomName});
+    var res = this.db.collection('rooms').find({name: roomName}).toArray();
 
-    console.log("NUMBER OF RESULTS: ", res.length());
+    console.log("NUMBER OF RESULTS: ", res.length);
 
-    var rooms = res.toArray();
+    var room = res[0];
 
-    console.log('HERE THE ROOM: ', rooms[0]);
-    return JSON.stringify(rooms[0]);
+    console.log('HERE THE ROOM: ', room);
+    return JSON.stringify(room);
   }
 
   return actions;
