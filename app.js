@@ -60,6 +60,8 @@ function parseAction(event) {
   var args = tokens.slice(1);
   var command = tokens[0];
 
+  console.log('RECEIVED COMMAND: ', command);
+
   switch (command) {
     case '$new-room':
       this.dbActions.writeNewRoom(args[0]);
