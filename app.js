@@ -81,6 +81,7 @@ function parseAction(event) {
     case '$expenses':
       this.dbActions.viewRoom(args[0], function(err, doc) {
         expenses = doc.expenses;
+        console.log('HERE ARE THE EXPENSES: ', expenses)
         sendAttachment(senderId, expensesAttachment(expenses));
       });
       break;
@@ -113,6 +114,7 @@ function expensesAttachment(expenses) {
       subtitle: element.amount,
       image_url: element.author
     };
+    console.log('EXPENSE ', expense);
     attachment.payload.elements.push(expense);
   });
 
@@ -187,6 +189,7 @@ function sendText(recipientId, messageText) {
 }
 
 function sendAttachment(recipientId, attachment) {
+  console.log('WE MADE IT');
   var messageData = {
     recipient: {
       id: recipientId
