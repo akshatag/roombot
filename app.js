@@ -52,14 +52,14 @@ function handlePostback(payload) {
   var tokens = payload.split(' ');
 
   if (tokens[0] = 'room') {
-    contextuals.roomid = tokens[1];
+    contextuals.roomId = tokens[1];
   } else if (tokens[0] = 'task') {
-    contextuals.taskid = tokens[1];
+    contextuals.taskId = tokens[1];
   } else if (tokens[1] = 'expense' ) {
-    contextuals.expenseid = tokens[1];
+    contextuals.expenseId = tokens[1];
   }
 
-  sendText(contextuals.senderId, 'Selected');
+  sendText(contextuals.senderId, 'done');
 
   return;
 }
@@ -83,11 +83,10 @@ function parseAction(event) {
 
   switch (command) {
     case '$new-room':
-      contextuals.roomid = this.dbActions.writeNewRoom(args[0]);
+      contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
       break;
     case '$details':
-      sendText(senderId, args[0]);
-      this.dbActions.viewRoom(args[0], function(err, doc) {
+      this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
         sendText(senderId, JSON.stringify(doc));
       });
       break;
@@ -112,6 +111,38 @@ function parseAction(event) {
 
 }
 
+function roomsAttachment(rooms) {
+  var attachment = {
+    type: 'template',
+    payload: {
+      template_type: 'list',
+      top_element_style: 'compact',
+      elements: [],
+      buttons: [
+        {
+          title: 'View More',
+          type: 'postback',
+          payload: '$' //TODO: view more handler
+        }
+      ]
+    }
+  }
+
+  rooms.forEach(function(element) {
+    var room = {
+      title: element.name,
+      buttons: [
+        {
+          title: 'Select',
+          type: 'postback',
+          payload: 'room ' + element._id
+        }
+      ]
+    }
+  })
+}
+
+
 function tasksAttachment(tasks) {
   var attachment = {
     type: 'template',
@@ -123,7 +154,7 @@ function tasksAttachment(tasks) {
         {
           title: 'View More',
           type: 'postback',
-          payload: '$details 3934sansom'
+          payload: '$' //TODO: view more handler
         }
       ]
     }
@@ -137,7 +168,7 @@ function tasksAttachment(tasks) {
         {
           title: 'Select',
           type: 'postback',
-          payload: '$'
+          payload: 'task ' + element.title //TODO: id?
         }
       ]
     };
@@ -161,6 +192,13 @@ function expensesAttachment(expenses) {
     var expense = {
       title: element.title,
       subtitle: "$" + element.amount
+      buttons: [
+        {
+          title: 'Select',
+          type: 'postback',
+          payload: 'expense ' + element.title //TODO: id?
+        }
+      ]
     };
     console.log('EXPENSE ', expense);
     attachment.payload.elements.push(expense);

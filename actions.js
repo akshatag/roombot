@@ -18,9 +18,9 @@ var make = function(db) {
     this.db.collection('rooms').update({id: roomId}, {$set: roomAttrs});
   }
 
-  actions.viewRoom = function(roomName, callback) {
-    console.log('LOOKING FOR ROOM w ROOMNAME: ', roomName);
-    this.db.collection('rooms').findOne({name: roomName}, callback);
+  actions.viewRoom = function(roomId, callback) {
+    console.log('LOOKING FOR ROOM w id: ', roomId);
+    this.db.collection('rooms').findOne({_id: roomId}, callback);
   }
 
   return actions;
