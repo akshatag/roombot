@@ -74,8 +74,8 @@ function parseAction(event) {
       break;
     case '$tasks':
       this.dbActions.viewRoom(args[0], function(err, doc) {
-        tasks = JSON.stringify(doc.tasks);
-        sendText(senderId, tasks);
+        tasks = doc.tasks;
+        sendAttachment(senderId, tasksAttachment(tasks));
       });
       break;
     case '$expenses':
@@ -91,6 +91,26 @@ function parseAction(event) {
 
 }
 
+function tasksAttachment(tasks) {
+  var attachment = {
+    type: 'template'
+    payload: {
+      template_type: 'list',
+      top_element_style: 'compact',
+      elements = []
+    }
+  }
+
+  tasks.forEach(function(element) {
+    var task = {
+      title: element.title,
+      subtitle: element.assignee
+    };
+    attachment.payload.elements.push(task);
+  });
+
+  return attachment;
+}
 
 function expensesAttachment(expenses) {
   var attachment = {
