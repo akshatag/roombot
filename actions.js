@@ -27,16 +27,16 @@ var make = function(db) {
 
   actions.getTasks = function(roomId, callback) {
     this.db.collection('tasks').find({room: roomId}, function(err, docs){
-      var tasks = docs.toArray(function(err, docs) {
-        callback(tasks);
+      docs.toArray(function(err, docs) {
+        callback(docs);
       });
     });
   }
 
   actions.getExpenses = function(roomId, callback) {
     this.db.collection('expenses').find({room: roomId}, function(err, docs) {
-      var expenses = docs.toArray(function(err, docs) {
-        callback(expenses);
+      docs.toArray(function(err, docs) {
+        callback(docs);
       });
     });
   }
