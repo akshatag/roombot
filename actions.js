@@ -50,13 +50,26 @@ var make = function(db) {
     this.db.collection('rooms').findOne({_id: ObjectId(roomId)}, callback);
   }
 
-  actions.removeTask = function(taskId){
-    this.db.collection('tasks').remove({_id: ObjectId(taskId)}, function() {});
+  actions.removeTask = function(taskId) {
+    console.log('ABOUT TO REMOVE TASK WITH ID: ', taskId);
+    this.db.collection('tasks').remove({_id: ObjectId(taskId)}, function(err, res) {
+      if (err) {
+        console.log('Error: ', err);
+      } else {
+        console.log('Removed task with ID: ', taskId);
+      }
+    });
   }
 
-  actions.removeExpense = function(expenseId){
-    this.db.collection('expenses').remove({_id: ObjectId(expenseId)}, function() {});
+  actions.removeExpense = function(expenseId) {
+    this.db.collection('expenses').remove({_id: ObjectId(expenseId)}, function(err, res) {
+      if (err) {
+        console.log('Error: ', err);
+      }
+    });
   }
+
+
 
   return actions;
 };

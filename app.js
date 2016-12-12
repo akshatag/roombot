@@ -96,6 +96,7 @@ function parseAction(event) {
       });
       break;
     case '$tasks':
+      sendText(senderId, contextuals.roomId);
       this.dbActions.getTasks(contextuals.roomId, function(tasks) {
         if(tasks == null || tasks.length == 0) {
           sendText(senderId, 'No Tasks');
