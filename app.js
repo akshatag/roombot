@@ -96,13 +96,13 @@ function parseAction(event) {
       });
       break;
     case '$tasks':
-      this.dbActions.viewRoom(args[0], function(err, doc) {
+      this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
         tasks = doc.tasks;
         sendAttachment(senderId, tasksAttachment(tasks));
       });
       break;
     case '$expenses':
-      this.dbActions.viewRoom(args[0], function(err, doc) {
+      this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
         expenses = doc.expenses;
         console.log('HERE ARE THE EXPENSES: ', expenses)
         sendAttachment(senderId, expensesAttachment(expenses));
