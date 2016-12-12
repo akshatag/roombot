@@ -19,7 +19,7 @@ var make = function(db) {
       }
       this.db.collection('rooms').findOne({name: name}, function (err, doc) {
         console.log('HERE IS THE NEW ROOM: ', doc);
-        return doc._id.$oid;
+        return doc._id;
       });
     });
   }
@@ -30,7 +30,7 @@ var make = function(db) {
 
   actions.viewRoom = function(roomId, callback) {
     console.log('LOOKING FOR ROOM w id: ', roomId);
-    this.db.collection('rooms').findOne({_id: {$oid : roomId}}, callback);
+    this.db.collection('rooms').findOne({_id: ObjectId(roomId)}, callback);
   }
 
   return actions;
