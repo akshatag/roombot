@@ -85,6 +85,10 @@ function parseAction(event) {
     case '$new-room':
       contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
       break;
+    case '$rooms':
+      this.dbActions.collection('rooms').find().toArray(function(err, docs) {
+        sendAttachment(senderId, roomsAttachment(docs))
+      });
     case '$details':
       this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
         sendText(senderId, JSON.stringify(doc));
