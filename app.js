@@ -54,15 +54,9 @@ function handlePostback(payload) {
   if (tokens[0] = 'room') {
     contextuals.roomId = tokens[1];
   } else if (tokens[0] = 'task') {
-
-    this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
-      var tasks = doc.tasks.filter(function(element) {
-        return element.title === tokens[1];
-      });
-      this.dbActions.updateRoom(this.contextuals.roomId, {tasks: tasks});
-    }).bind(this);
-
+    contextuals.taskId = tokens[1];
   } else if (tokens[1] = 'expense' ) {
+    contextuals.expenseId = tokens[1];
   }
 
   sendText(contextuals.senderId, 'done');
@@ -102,8 +96,7 @@ function parseAction(event) {
       });
       break;
     case '$tasks':
-      this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
-        tasks = doc.tasks;
+      this.dbActions.getTasks(contextuals.roomId, function(tasks) {
         if(tasks == null || tasks.length == 0) {
           sendText(senderId, 'No Tasks');
         }
@@ -111,9 +104,8 @@ function parseAction(event) {
       });
       break;
     case '$expenses':
-      this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
-        expenses = doc.expenses;
-        if(tasks == null || tasks.length == 0) {
+      this.dbActions.getExpenses(contextuals.roomId, function(expenses) {
+        if(expenses == null || expenses.length == 0) {
           sendText(senderId, 'No Expenses');
         }
         sendAttachment(senderId, expensesAttachment(expenses));

@@ -26,6 +26,22 @@ var make = function(db) {
     });
   }
 
+  actions.getTasks = function(roomId, callback) {
+    this.db.collection('tasks').find({room: roomId}, function(err, docs){
+      var tasks = docs.toArray(function(err, docs) {
+        callback(tasks);
+      });
+    });
+  }
+
+  actions.getExpenses = function(roomId, callback) {
+    this.db.collection('expenses').find({room: roomId}, function(err, docs) {
+      var expenses = docs.toArray(function(err, docs) {
+        callback(expenses);
+      });
+    });
+  }
+
   actions.updateRoom = function(roomId, roomAttrs) {
     console.log('LOOKING FOR ROOM w ID: ', roomId);
     this.db.collection('rooms').update({_id: ObjectId(roomId)}, {$set: roomAttrs});
