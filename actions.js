@@ -26,9 +26,9 @@ var make = function(db) {
   }
 
   actions.writeTask = function(roomId, name, assignee) {
+    console.log('WRITING TASK: ', name, assignee);
     var task = {room: roomId, title: name, assignee: assignee};
     this.db.collection('tasks').insert([task], function(err, res) {
-
     });
   }
 

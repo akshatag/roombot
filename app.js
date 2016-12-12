@@ -79,7 +79,7 @@ function parseAction(event) {
   if (command == '+room') {
     contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
     return;
-  } else if (command == '$room') {
+  } else if (command == '$rooms') {
     this.dbActions.allRooms(function(docs) {
       sendAttachment(senderId, roomsAttachment(docs));
     });
@@ -97,6 +97,7 @@ function parseAction(event) {
   /** CONTEXTUALS.ROOMID MUST BE SET BEFORE EXECUTING THESE **/
   switch (command) {
     case '+task':
+      console.log('PARSED ADD TASK ACTION');
       this.dbActions.writeTask(contextuals.roomId, args[0], args[1]);
       break;
     case '+expense':
