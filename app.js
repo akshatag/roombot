@@ -147,6 +147,7 @@ function roomsAttachment(rooms) {
     attachment.payload.elements.push(room);
   });
 
+  return attachment;
 }
 
 
