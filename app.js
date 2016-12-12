@@ -191,7 +191,7 @@ function expensesAttachment(expenses) {
   expenses.forEach(function(element) {
     var expense = {
       title: element.title,
-      subtitle: "$" + element.amount
+      subtitle: "$" + element.amount,
       buttons: [
         {
           title: 'Select',
