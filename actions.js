@@ -7,7 +7,7 @@ var make = function(db) {
       docs.toArray(function(err, docs) {
         return docs;
       });
-    })
+    });
   }
 
   actions.writeNewRoom = function(name) {
