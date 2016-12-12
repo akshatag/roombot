@@ -7,7 +7,6 @@ var make = function(db) {
   actions.allRooms = function(callback) {
     this.db.collection('rooms').find(function(err, docs) {
       docs.toArray(function(err, docs) {
-        console.log('DOC LENGTH: ', docs.length);
         callback(docs);
       });
     });
