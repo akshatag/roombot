@@ -54,7 +54,6 @@ function handlePostback(payload) {
   if (tokens[0] === 'room') {
     contextuals.roomId = tokens[1];
   } else if (tokens[0] === 'task') {
-    console.log('CALLING REMOVE ON TOKEN: ', tokens[1]);
     this.dbActions.removeTask(tokens[1]);
   } else if (tokens[0] === 'expense' ) {
     this.dbActions.removeExpense(tokens[1]);
@@ -82,15 +81,26 @@ function parseAction(event) {
 
   console.log('RECEIVED COMMAND: ', command);
 
+  if (command == '$new-room') {
+    contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
+    return;
+  } else if (command == '$room') {
+    this.dbActions.allRooms(function(docs) {
+      sendAttachment(senderId, roomsAttachment(docs));
+    });
+    return;
+  }
+
+  if(contextuals.roomId == null || !contextuals.roomId) {
+    sendText(senderId, 'Pick a room first!');
+    this.dbActions.allRooms(function(docs) {
+      sendAttachment(senderId, roomsAttachment(docs));
+    });
+    return;
+  }
+
+  /** CONTEXTUALS.ROOMID MUST BE SET BEFORE EXECUTING THESE **/
   switch (command) {
-    case '$new-room':
-      contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
-      break;
-    case '$rooms':
-      this.dbActions.allRooms(function(docs) {
-        sendAttachment(senderId, roomsAttachment(docs));
-      });
-      break;
     case '$details':
       this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
         sendText(senderId, JSON.stringify(doc));
