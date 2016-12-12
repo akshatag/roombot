@@ -144,9 +144,9 @@ function roomsAttachment(rooms) {
         }
       ]
     }
+    attachment.payload.elements.push(room);
   });
 
-  attachment.payload.elements.push(room);
 }
 
 
