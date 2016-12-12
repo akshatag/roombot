@@ -54,9 +54,10 @@ function handlePostback(payload) {
   if (tokens[0] = 'room') {
     contextuals.roomId = tokens[1];
   } else if (tokens[0] = 'task') {
-    contextuals.taskId = tokens[1];
+    this.dbActions.removeTask(tokens[1]);
   } else if (tokens[1] = 'expense' ) {
     contextuals.expenseId = tokens[1];
+    this.dbActions.removeExpense(tokens[1]);
   }
 
   sendText(contextuals.senderId, 'done');

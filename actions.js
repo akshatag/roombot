@@ -50,6 +50,14 @@ var make = function(db) {
     this.db.collection('rooms').findOne({_id: ObjectId(roomId)}, callback);
   }
 
+  actions.removeTask = function(taskId){
+    this.db.collection('tasks').remove({_id: ObjectId(taskId)}, function() {});
+  }
+
+  actions.removeExpense = function(expenseId){
+    this.db.collection('tasks').remove({_id: ObjectId(expenseId)}, function() {});
+  }
+
   return actions;
 };
 
