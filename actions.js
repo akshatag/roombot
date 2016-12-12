@@ -31,7 +31,6 @@ var make = function(db) {
   }
 
   actions.viewRoom = function(roomId, callback) {
-    console.log('LOOKING FOR ROOM w id: ', roomId);
     this.db.collection('rooms').findOne({_id: ObjectId(roomId)}, callback);
   }
 
