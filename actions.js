@@ -9,8 +9,9 @@ var make = function(db) {
         console.log('Could not write to db. Err: ', err);
       }
       this.db.collection('rooms').findOne({name: name}, function (err, doc) {
+        console.log('HERE IS THE NEW ROOM: ', doc);
         return doc._id;
-      })
+      });
     });
   }
 
