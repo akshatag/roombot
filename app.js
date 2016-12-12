@@ -195,6 +195,7 @@ app.post('/webhook', function (req, res) {
         if (event.message) {
           parseAction(event);
         } else if (event.postback && event.postback.payload) {
+          console.log('RECEIVED POSTBACK CALL: '. event.postback.payload);
           parseAction(event.postback.payload);
         }else {
           //console.log("Webhook received unknown event: ", event);
