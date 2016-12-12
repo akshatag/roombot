@@ -27,6 +27,7 @@ var make = function(db) {
   }
 
   actions.updateRoom = function(roomId, roomAttrs) {
+    console.log('LOOKING FOR ROOM w ID: ', roomId);
     this.db.collection('rooms').update({id: roomId}, {$set: roomAttrs});
   }
 
