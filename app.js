@@ -54,6 +54,7 @@ function handlePostback(payload) {
   if (tokens[0] = 'room') {
     contextuals.roomId = tokens[1];
   } else if (tokens[0] = 'task') {
+    console.log('CALLING REMOVE ON TOKEN: ', tokens[1]);
     this.dbActions.removeTask(tokens[1]);
   } else if (tokens[1] = 'expense' ) {
     this.dbActions.removeExpense(tokens[1]);
