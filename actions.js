@@ -3,9 +3,11 @@ var make = function(db) {
   var actions = {db: db};
 
   actions.allRooms = function() {
-    this.db.collection('rooms').find().toArray(function(err, docs) {
-      return docs;
-    });
+    this.db.collection('rooms').find({}, function(err, docs) {
+      docs.toArray(function(err, docs) {
+        return docs;
+      });
+    })
   }
 
   actions.writeNewRoom = function(name) {
