@@ -56,7 +56,6 @@ function handlePostback(payload) {
   } else if (tokens[0] = 'task') {
     this.dbActions.removeTask(tokens[1]);
   } else if (tokens[1] = 'expense' ) {
-    contextuals.expenseId = tokens[1];
     this.dbActions.removeExpense(tokens[1]);
   }
 

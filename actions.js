@@ -55,7 +55,7 @@ var make = function(db) {
   }
 
   actions.removeExpense = function(expenseId){
-    this.db.collection('tasks').remove({_id: ObjectId(expenseId)}, function() {});
+    this.db.collection('expenses').remove({_id: ObjectId(expenseId)}, function() {});
   }
 
   return actions;
