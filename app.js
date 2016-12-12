@@ -70,18 +70,13 @@ function parseAction(event) {
   var timestamp = event.timestamp;
   var text = event.message.text;
 
-  // not an action event
-  if (!text.startsWith('$')) {
-    return;
-  }
-
   var tokens = text.split(' ');
   var args = tokens.slice(1);
   var command = tokens[0];
 
   console.log('RECEIVED COMMAND: ', command);
 
-  if (command == '$new-room') {
+  if (command == '+room') {
     contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
     return;
   } else if (command == '$room') {
@@ -101,6 +96,12 @@ function parseAction(event) {
 
   /** CONTEXTUALS.ROOMID MUST BE SET BEFORE EXECUTING THESE **/
   switch (command) {
+    case '+task':
+      this.dbActions.writeTask(contextuals.roomId, args[0], args[1]);
+      break;
+    case '+expense':
+      this.dbActions.writeExpense(contextuals.roomId, args[0], args[1], 'Akshat');
+      break;
     case '$details':
       this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
         sendText(senderId, JSON.stringify(doc));

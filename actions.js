@@ -25,6 +25,19 @@ var make = function(db) {
     });
   }
 
+  action.writeTask = function(roomId, name, assignee) {
+    var task = {room: roomId, title: name, assignee: assignee};
+    this.db.collection('tasks').insert([task], function(err, res) {
+
+    });
+  }
+
+  action.writeExpense = function(roomId, name, amount, author) {
+    var expense = {room: roomId, title: name, amount: amount, author: author};
+    this.db.collection('expenses').insert([expense], function(err, res) {
+    });
+  }
+
   actions.getTasks = function(roomId, callback) {
     this.db.collection('tasks').find({room: roomId}, function(err, docs){
       docs.toArray(function(err, docs) {
@@ -54,7 +67,7 @@ var make = function(db) {
     this.db.collection('tasks').remove({_id: ObjectId(taskId)}, function(err, res) {
       if (err) {
         console.log('Error: ', err);
-      } 
+      }
     });
   }
 
