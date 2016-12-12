@@ -51,12 +51,12 @@ function handlePostback(payload) {
   console.log('RECEIVED POSTBACK CALL: ', payload);
   var tokens = payload.split(' ');
 
-  if (tokens[0] = 'room') {
+  if (tokens[0] === 'room') {
     contextuals.roomId = tokens[1];
-  } else if (tokens[0] = 'task') {
+  } else if (tokens[0] === 'task') {
     console.log('CALLING REMOVE ON TOKEN: ', tokens[1]);
     this.dbActions.removeTask(tokens[1]);
-  } else if (tokens[1] = 'expense' ) {
+  } else if (tokens[1] === 'expense' ) {
     this.dbActions.removeExpense(tokens[1]);
   }
 
