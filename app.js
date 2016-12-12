@@ -113,7 +113,14 @@ function tasksAttachment(tasks) {
   tasks.forEach(function(element) {
     var task = {
       title: element.title,
-      subtitle: element.assignee
+      subtitle: element.assignee,
+      buttons: [
+        {
+          title: 'Select',
+          type: 'postback',
+          payload: '$'
+        }
+      ]
     };
     attachment.payload.elements.push(task);
   });
