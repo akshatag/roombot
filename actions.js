@@ -2,11 +2,11 @@ var make = function(db) {
 
   var actions = {db: db};
 
-  actions.allRooms = function() {
+  actions.allRooms = function(callback) {
     this.db.collection('rooms').find(function(err, docs) {
       docs.toArray(function(err, docs) {
         console.log('DOC LENGTH: ', docs.length);
-        return docs;
+        callback(docs);
       });
     });
   }

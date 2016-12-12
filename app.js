@@ -86,8 +86,9 @@ function parseAction(event) {
       contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
       break;
     case '$rooms':
-      var rooms = this.dbActions.allRooms();
-      sendAttachment(senderId, roomsAttachment(rooms));
+      this.dbActions.allRooms(function(docs) {
+        sendAttachment(senderId, roomsAttachment(docs));
+      });
       break;
     case '$details':
       this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
