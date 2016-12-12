@@ -66,7 +66,7 @@ function parseAction(event) {
 
   switch (command) {
     case '$new-room':
-      this.dbActions.writeNewRoom(args[0]);
+      contextuals.roomid = this.dbActions.writeNewRoom(args[0]);
       break;
     case '$details':
       sendText(senderId, args[0]);
@@ -194,7 +194,9 @@ app.post('/webhook', function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           parseAction(event);
-        } else {
+        } else if (event.postback && event.postback.payload) {
+          parseAction(event.postback.payload);
+        }else {
           //console.log("Webhook received unknown event: ", event);
         }
       });

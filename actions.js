@@ -8,6 +8,9 @@ var make = function(db) {
       if (err){
         console.log('Could not write to db. Err: ', err);
       }
+      this.db.collection('rooms').findOne({name: name}, function (err, doc) {
+        return doc._id;
+      })
     });
   }
 
