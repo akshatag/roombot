@@ -25,14 +25,14 @@ var make = function(db) {
     });
   }
 
-  action.writeTask = function(roomId, name, assignee) {
+  actions.writeTask = function(roomId, name, assignee) {
     var task = {room: roomId, title: name, assignee: assignee};
     this.db.collection('tasks').insert([task], function(err, res) {
 
     });
   }
 
-  action.writeExpense = function(roomId, name, amount, author) {
+  actions.writeExpense = function(roomId, name, amount, author) {
     var expense = {room: roomId, title: name, amount: amount, author: author};
     this.db.collection('expenses').insert([expense], function(err, res) {
     });
