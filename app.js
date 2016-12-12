@@ -93,11 +93,11 @@ function parseAction(event) {
 
 function tasksAttachment(tasks) {
   var attachment = {
-    type: 'template'
+    type: 'template',
     payload: {
       template_type: 'list',
       top_element_style: 'compact',
-      elements = []
+      elements: []
     }
   }
 
