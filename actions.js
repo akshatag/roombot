@@ -2,6 +2,12 @@ var make = function(db) {
 
   var actions = {db: db};
 
+  actions.allRooms = function() {
+    this.db.collection('rooms').find().toArray(function(err, docs) {
+      return docs;
+    });
+  }
+
   actions.writeNewRoom = function(name) {
     var room  = {name: name};
     this.db.collection('rooms').insert([room], function(err, res) {
