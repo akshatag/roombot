@@ -13,6 +13,8 @@ var mongoCL = mongoDB.MongoClient;
 var dbActions;
 var db;
 
+var contextuals = {};
+
 mongoCL.connect(DATABASE_URL, function (err, db) {
   if (err) {
     console.log('Unable to connect to mongoDB. Err: ', err);
@@ -97,7 +99,14 @@ function tasksAttachment(tasks) {
     payload: {
       template_type: 'list',
       top_element_style: 'compact',
-      elements: []
+      elements: [],
+      buttons: [
+        {
+          title: 'View More',
+          type: 'postback',
+          payload: '$details 3934sansom'
+        }
+      ]
     }
   }
 
@@ -202,30 +211,6 @@ function sendText(recipientId, messageText) {
 }
 
 function sendAttachment(recipientId, attachment) {
-  console.log('WE MADE IT ', JSON.stringify(attachment));
-
-  // var messageData = {
-  //   recipient: {
-  //     id: recipientId
-  //   },
-  //   message: {
-  //     attachment: {
-  //       type: "template",
-  //       payload: {
-  //         template_type: "list",
-  //         top_element_style: "compact",
-  //         elements: [{
-  //           title: "rift",
-  //           subtitle: "Next-generation virtual reality",
-  //         }, {
-  //           title: "touch",
-  //           subtitle: "Your Hands, Now in VR",
-  //         }]
-  //       }
-  //     }
-  //   }
-  // };
-
   var messageData = {
     recipient: {
       id: recipientId
