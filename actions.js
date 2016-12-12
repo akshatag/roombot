@@ -51,13 +51,10 @@ var make = function(db) {
   }
 
   actions.removeTask = function(taskId) {
-    console.log('ABOUT TO REMOVE TASK WITH ID: ', taskId);
     this.db.collection('tasks').remove({_id: ObjectId(taskId)}, function(err, res) {
       if (err) {
         console.log('Error: ', err);
-      } else {
-        console.log('Removed task with ID: ', taskId);
-      }
+      } 
     });
   }
 
