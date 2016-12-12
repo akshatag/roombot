@@ -54,6 +54,12 @@ function handlePostback(payload) {
   if (tokens[0] = 'room') {
     contextuals.roomId = tokens[1];
   } else if (tokens[0] = 'task') {
+    this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
+      var tasks = doc.tasks.filter(function(element) {
+        return element.title === tokens[1];
+      });
+      this.dbActions.updateRoom(contextuals.roomId, {tasks: tasks});
+    }).bind(this);
     contextuals.taskId = tokens[1];
   } else if (tokens[1] = 'expense' ) {
     contextuals.expenseId = tokens[1];
@@ -127,14 +133,7 @@ function roomsAttachment(rooms) {
     payload: {
       template_type: 'list',
       top_element_style: 'compact',
-      elements: [],
-      buttons: [
-        {
-          title: 'View More',
-          type: 'postback',
-          payload: '$' //TODO: view more handler
-        }
-      ]
+      elements: []
     }
   }
 
@@ -162,14 +161,7 @@ function tasksAttachment(tasks) {
     payload: {
       template_type: 'list',
       top_element_style: 'compact',
-      elements: [],
-      buttons: [
-        {
-          title: 'View More',
-          type: 'postback',
-          payload: '$' //TODO: view more handler
-        }
-      ]
+      elements: []
     }
   }
 
@@ -179,7 +171,7 @@ function tasksAttachment(tasks) {
       subtitle: element.assignee,
       buttons: [
         {
-          title: 'Select',
+          title: 'Done',
           type: 'postback',
           payload: 'task ' + element.title //TODO: id?
         }
@@ -207,7 +199,7 @@ function expensesAttachment(expenses) {
       subtitle: "$" + element.amount,
       buttons: [
         {
-          title: 'Select',
+          title: 'Delete',
           type: 'postback',
           payload: 'expense ' + element.title //TODO: id?
         }
