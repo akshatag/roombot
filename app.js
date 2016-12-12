@@ -47,6 +47,23 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
+function handlePostback(payload) {
+  console.log('RECEIVED POSTBACK CALL: ', payload);
+  var tokens = text.split(' ');
+
+  if (tokens[0] = 'room') {
+    contextuals.roomid = tokens[1];
+  } else if (tokens[0] = 'task') {
+    contextuals.taskid = tokens[1];
+  } else if (tokens[1] = 'expense' ) {
+    contextuals.expenseid = tokens[1];
+  }
+
+  sendText(contextuals.senderId, 'Selected');
+
+  return;
+}
+
 function parseAction(event) {
   var senderId = event.sender.id;
   var recipientId = event.recipient.id;
@@ -90,6 +107,8 @@ function parseAction(event) {
     default:
       sendText(senderId, 'help?');
   }
+
+  contextuals.senderId = senderId;
 
 }
 
@@ -195,8 +214,7 @@ app.post('/webhook', function (req, res) {
         if (event.message) {
           parseAction(event);
         } else if (event.postback && event.postback.payload) {
-          console.log('RECEIVED POSTBACK CALL: ', event.postback.payload);
-          parseAction(event.postback.payload);
+          handlePostback(event.postback.payload);
         }else {
           //console.log("Webhook received unknown event: ", event);
         }
