@@ -54,15 +54,15 @@ function handlePostback(payload) {
   if (tokens[0] = 'room') {
     contextuals.roomId = tokens[1];
   } else if (tokens[0] = 'task') {
+
     this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
       var tasks = doc.tasks.filter(function(element) {
         return element.title === tokens[1];
       });
-      this.dbActions.updateRoom(contextuals.roomId, {tasks: tasks});
+      this.dbActions.updateRoom(this.contextuals.roomId, {tasks: tasks});
     }).bind(this);
-    contextuals.taskId = tokens[1];
+
   } else if (tokens[1] = 'expense' ) {
-    contextuals.expenseId = tokens[1];
   }
 
   sendText(contextuals.senderId, 'done');
