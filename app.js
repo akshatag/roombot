@@ -49,7 +49,7 @@ app.listen((process.env.PORT || 3000));
 
 function handlePostback(payload) {
   console.log('RECEIVED POSTBACK CALL: ', payload);
-  var tokens = text.split(' ');
+  var tokens = payload.split(' ');
 
   if (tokens[0] = 'room') {
     contextuals.roomid = tokens[1];
