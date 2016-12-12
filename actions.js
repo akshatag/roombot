@@ -14,7 +14,7 @@ var make = function(db) {
   }
 
   actions.writeNewRoom = function(name) {
-    var room  = {name: name};
+    var room  = {name: name, tasks: [], expenses: [], roommates: []};
     this.db.collection('rooms').insert([room], function(err, res) {
       if (err){
         console.log('Could not write to db. Err: ', err);

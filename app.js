@@ -98,13 +98,18 @@ function parseAction(event) {
     case '$tasks':
       this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
         tasks = doc.tasks;
+        if(tasks == null || tasks.length == 0) {
+          sendText(senderId, 'No Tasks');
+        }
         sendAttachment(senderId, tasksAttachment(tasks));
       });
       break;
     case '$expenses':
       this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {
         expenses = doc.expenses;
-        console.log('HERE ARE THE EXPENSES: ', expenses)
+        if(tasks == null || tasks.length == 0) {
+          sendText(senderId, 'No Expenses');
+        }
         sendAttachment(senderId, expensesAttachment(expenses));
       });
       break;
