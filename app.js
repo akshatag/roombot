@@ -52,7 +52,7 @@ function handlePostback(payload) {
   var tokens = payload.split(' ');
 
   if (tokens[0] = 'room') {
-    contextuals.roomId = tokens[1];
+    this.contextuals.roomId = tokens[1];
   } else if (tokens[0] = 'task') {
     this.dbActions.removeTask(tokens[1]);
   } else if (tokens[1] = 'expense' ) {
@@ -60,7 +60,7 @@ function handlePostback(payload) {
     this.dbActions.removeExpense(tokens[1]);
   }
 
-  sendText(contextuals.senderId, 'done');
+  sendText(this.contextuals.senderId, 'done');
 
   return;
 }
@@ -84,7 +84,7 @@ function parseAction(event) {
 
   switch (command) {
     case '$new-room':
-      contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
+      this.contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
       break;
     case '$rooms':
       this.dbActions.allRooms(function(docs) {
@@ -166,7 +166,7 @@ function tasksAttachment(tasks) {
         {
           title: 'Done',
           type: 'postback',
-          payload: 'task ' + element.title //TODO: id?
+          payload: 'task ' + element._id //TODO: id?
         }
       ]
     };
@@ -194,7 +194,7 @@ function expensesAttachment(expenses) {
         {
           title: 'Delete',
           type: 'postback',
-          payload: 'expense ' + element.title //TODO: id?
+          payload: 'expense ' + element._id //TODO: id?
         }
       ]
     };
