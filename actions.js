@@ -1,3 +1,5 @@
+var ObjectId = require('mongodb').ObjectID;
+
 var make = function(db) {
 
   var actions = {db: db};
