@@ -79,9 +79,19 @@ function parseAction(event) {
   if (command == '+room') {
     contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
     return;
-  } else if (command == '$rooms') {
-    this.dbActions.allRooms(function(docs) {
-      sendAttachment(senderId, roomsAttachment(docs));
+  } else if (command == '$join') {
+    this.dbActions.joinRoom(senderId, args[0], args[1], function(res) {
+      if (res) {
+        sendText(senderId, 'Joined room!');
+      } else {
+        sendText(senderId, 'Invalid room or wrong code');
+      }
+    });
+    return;
+  }
+  else if (command == '$rooms') {
+    this.dbActions.allRooms(function(results) {
+      sendAttachment(senderId, roomsAttachment(results));
     });
     return;
   }

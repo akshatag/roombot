@@ -5,10 +5,33 @@ var make = function(db) {
   var actions = {db: db};
 
   actions.allRooms = function(callback) {
-    this.db.collection('rooms').find(function(err, docs) {
-      docs.toArray(function(err, docs) {
-        callback(docs);
+    this.db.collection('roommates').findOne({senderId: senderId}, function(res, doc) {
+      var rooms = doc.rooms;
+      var results = [];
+      rooms.forEach(function(element, idx, arr) {
+        this.db.collection('rooms').findOne({_id: ObjectId(element)}, function(res, doc) {
+          results.push(doc);
+        });
+        if (results.length == arr.length) {
+          callback(results);
+        }
       });
+    });
+  }
+
+  actions.joinRoom = function(senderId, roomname, code, callback) {
+    this.db.collection('rooms').findOne({name: roomname}, function(err, doc) {
+      if(doc.code === code) {
+        var roomId = doc._id;
+        this.db.collection('roommates').findOne({senderId: senderId}, function(err, doc) {
+          var rooms = doc.rooms;
+          rooms.push(roomId);
+          this.db.collection('roommates').update({senderId: senderId}, {$set : {rooms: rooms}});
+        });
+        callback(1);
+      } else {
+        callback(0);
+      }
     });
   }
 
