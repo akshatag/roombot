@@ -201,6 +201,7 @@ function tasksAttachment(senderId, tasks) {
     });
   });
 
+  console.log('ATTACHMENT ', attachment);
   return attachment;
 }
 
