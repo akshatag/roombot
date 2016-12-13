@@ -117,7 +117,7 @@ function parseAction(event) {
         if(tasks == null || tasks.length == 0) {
           sendText(senderId, 'No Tasks');
         }
-        sendAttachment(senderId, tasksAttachment(tasks));
+        sendAttachment(senderId, tasksAttachment(senderId, tasks));
       });
       break;
     case '$expenses':
@@ -125,7 +125,7 @@ function parseAction(event) {
         if(expenses == null || expenses.length == 0) {
           sendText(senderId, 'No Expenses');
         }
-        sendAttachment(senderId, expensesAttachment(expenses));
+        sendAttachment(senderId, expensesAttachment(senderId, expenses));
       });
       break;
     default:
@@ -164,7 +164,7 @@ function roomsAttachment(rooms) {
 }
 
 
-function tasksAttachment(tasks) {
+function tasksAttachment(senderId, tasks) {
   var attachment = {
     type: 'template',
     payload: {
@@ -175,24 +175,35 @@ function tasksAttachment(tasks) {
   }
 
   tasks.forEach(function(element) {
-    var task = {
-      title: element.title,
-      subtitle: element.assignee,
-      buttons: [
-        {
+    this.dbActions.getUserName(element.assignee, function(name) {
+      var task = {
+        title: element.title,
+        subtitle: name,
+        buttons: []
+      };
+
+      if (senderId == element.assignee) {
+        task.buttons.push({
           title: 'Done',
           type: 'postback',
-          payload: 'task ' + element._id //TODO: id?
-        }
-      ]
-    };
-    attachment.payload.elements.push(task);
-  });
+          payload: 'task ' + element._id
+        });
+      } else {
+        task.buttons.push({
+          title: 'Remind',
+          type: 'postback',
+          payload: 'task 0' //TODO: set
+        });
+      }
+
+      attachment.payload.elements.push(task);
+    });
+  }).bind(this);
 
   return attachment;
 }
 
-function expensesAttachment(expenses) {
+function expensesAttachment(senderId, expenses) {
   var attachment = {
     type: 'template',
     payload: {
