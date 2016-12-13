@@ -10,7 +10,7 @@ var make = function(db) {
       var results = [];
       console.log('HERE ARE THE ROOMS ', rooms);
       rooms.forEach(function(element, idx, arr) {
-        consoe.log('FINDING ELEMENT ', element);
+        console.log('FINDING ELEMENT ', element);
         this.db.collection('rooms').findOne({_id: ObjectId(element)}, function(res, doc) {
           results.push(doc);
         });
