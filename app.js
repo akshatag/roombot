@@ -198,7 +198,7 @@ function tasksAttachment(senderId, tasks) {
 
       attachment.payload.elements.push(task);
     });
-  }).bind(this);
+  });
 
   return attachment;
 }
