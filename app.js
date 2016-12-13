@@ -102,7 +102,7 @@ function parseAction(event) {
       });
       break;
     case '+expense':
-      this.dbActions.writeExpense(contextuals.roomId, args[0], args[1], 'Akshat', function(err, res) {
+      this.dbActions.writeExpense(contextuals.roomId, args[0], args[1], senderId, function(err, res) {
         sendText(senderId, 'Added expense!');
       });
       break;

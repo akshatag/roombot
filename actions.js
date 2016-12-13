@@ -26,13 +26,29 @@ var make = function(db) {
   }
 
   actions.writeTask = function(roomId, name, assignee, callback) {
-    var task = {room: roomId, title: name, assignee: assignee};
-    this.db.collection('tasks').insert([task], callback);
+    var sid = this.getSenderId(assignee, function(sid) {
+      var task = {room: roomId, title: name, assignee: sid};
+      this.db.collection('tasks').insert([task], callback);
+    });
   }
 
   actions.writeExpense = function(roomId, name, amount, author, callback) {
     var expense = {room: roomId, title: name, amount: amount, author: author};
     this.db.collection('expenses').insert([expense], callback);
+  }
+
+  actions.getSenderId(name) = function(name, callback) {
+    this.db.collection('roommates').findOne({name: name}, function(err, doc){
+      var senderId = doc.senderId;
+      callback(senderId);
+    });
+  }
+
+  actions.getUserName(id) = function(senderId, callback) {
+    this.db.collection('roommates').findOne({senderId: senderId}, function(err, doc){
+      var senderId = doc.name;
+      callback(name);
+    });
   }
 
   actions.getTasks = function(roomId, callback) {
