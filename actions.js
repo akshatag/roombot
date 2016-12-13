@@ -13,11 +13,12 @@ var make = function(db) {
         console.log('FINDING ELEMENT ', element);
         this.db.collection('rooms').findOne({_id: ObjectId(element)}, function(res, doc) {
           results.push(doc);
+          console.log('RESULTS', results);
+          if (results.length == arr.length) {
+            console.log('WE MADE IT');
+            callback(results);
+          }
         });
-        if (results.length == arr.length) {
-          console.log('WE MADE IT');
-          callback(results);
-        }
       });
     });
   }
