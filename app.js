@@ -117,7 +117,7 @@ function parseAction(event) {
         if(tasks == null || tasks.length == 0) {
           sendText(senderId, 'No Tasks');
         }
-        sendAttachment(senderId, tasksAttachment(senderId, tasks));
+        tasksAttachment(senderId, tasks);
       });
       break;
     case '$expenses':
@@ -199,7 +199,7 @@ function tasksAttachment(senderId, tasks) {
       console.log('PUSHING TASK: ', JSON.stringify(task));
       attachment.payload.elements.push(task);
       if(attachment.payload.elements.length == arr.length){
-        return attachment;
+        sendAttachment(senderId, attachment);
       }
     });
   });
