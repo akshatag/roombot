@@ -55,8 +55,10 @@ function handlePostback(payload) {
     contextuals.roomId = tokens[1];
   } else if (tokens[0] === 'task') {
     this.dbActions.removeTask(tokens[1]);
-  } else if (tokens[0] === 'expense' ) {
+  } else if (tokens[0] === 'expense') {
     this.dbActions.removeExpense(tokens[1]);
+  } else if (tokens[0] === 'remind') {
+    sendText(tokens[1], 'Reminder: ' + tokens[2]);
   }
 
   sendText(contextuals.senderId, 'done');
@@ -191,7 +193,7 @@ function sendTasksAttachment(senderId, tasks) {
         buttons: []
       };
 
-      if (senderId == element.assignee) {
+      if (false && senderId == element.assignee) {
         task.buttons.push({
           title: 'Done',
           type: 'postback',
@@ -201,7 +203,7 @@ function sendTasksAttachment(senderId, tasks) {
         task.buttons.push({
           title: 'Remind',
           type: 'postback',
-          payload: 'task 0' //TODO: set
+          payload: 'remind ' + element.assignee + ' ' + element.title
         });
       }
 
