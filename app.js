@@ -117,7 +117,7 @@ function parseAction(event) {
         if(tasks == null || tasks.length == 0) {
           sendText(senderId, 'No Tasks');
         }
-        tasksAttachment(senderId, tasks);
+        sendTasksAttachment(senderId, tasks);
       });
       break;
     case '$expenses':
@@ -125,7 +125,7 @@ function parseAction(event) {
         if(expenses == null || expenses.length == 0) {
           sendText(senderId, 'No Expenses');
         }
-        sendAttachment(senderId, expensesAttachment(senderId, expenses));
+        sendExpensesAttachment(senderId, expenses));
       });
       break;
     default:
@@ -164,7 +164,7 @@ function roomsAttachment(rooms) {
 }
 
 
-function tasksAttachment(senderId, tasks) {
+function sendTasksAttachment(senderId, tasks) {
   var attachment = {
     type: 'template',
     payload: {
@@ -205,7 +205,7 @@ function tasksAttachment(senderId, tasks) {
   });
 }
 
-function expensesAttachment(senderId, expenses) {
+function sendExpensesAttachment(senderId, expenses) {
   var attachment = {
     type: 'template',
     payload: {
@@ -215,23 +215,28 @@ function expensesAttachment(senderId, expenses) {
     }
   }
 
-  expenses.forEach(function(element) {
-    var expense = {
-      title: element.title,
-      subtitle: "$" + element.amount,
-      buttons: [
-        {
-          title: 'Delete',
-          type: 'postback',
-          payload: 'expense ' + element._id //TODO: id?
-        }
-      ]
-    };
-    console.log('EXPENSE ', expense);
-    attachment.payload.elements.push(expense);
-  });
+  expenses.forEach(function(element, idx, arr) {
+    this.dbActions.getUserName(element.author, function(name) {
+      var expense = {
+        title: element.title,
+        subtitle: "$" + element.amount,
+        buttons: []
+      };
 
-  return attachment;
+      if(senderId == element.author){
+        task.buttons.push({
+          title: 'Remove',
+          type: 'postback',
+          payload: 'expense' + element._id
+        });
+      }
+
+      attachment.payload.elements.push(expense);
+      if(attachment.payload.elements.length == arr.length){
+        sendAttachment(senderId, attachment);
+      }
+    });
+  });
 }
 
 function buttonAttachment(text, buttons) {
