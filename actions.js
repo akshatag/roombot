@@ -47,7 +47,7 @@ var make = function(db) {
   actions.getUserName = function(senderId, callback) {
     console.log('SEARCHING FOR NAME OF SENDER: ', senderId);
     this.db.collection('roommates').findOne({senderId: senderId}, function(err, doc){
-      var senderId = doc.name;
+      var name = doc.name;
       callback(name);
     });
   }

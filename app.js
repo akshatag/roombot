@@ -74,7 +74,7 @@ function parseAction(event) {
   var args = tokens.slice(1);
   var command = tokens[0];
 
-  console.log('RECEIVED COMMAND: ', senderId);
+  console.log('RECEIVED COMMAND: ', command);
 
   if (command == '+room') {
     contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
