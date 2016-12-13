@@ -196,6 +196,7 @@ function tasksAttachment(senderId, tasks) {
         });
       }
 
+      console.log('PUSHING TASK: ', JSON.stringify(task));
       attachment.payload.elements.push(task);
     });
   });
