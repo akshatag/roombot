@@ -74,7 +74,7 @@ function parseAction(event) {
   var args = tokens.slice(1);
   var command = tokens[0];
 
-  console.log('RECEIVED COMMAND: ', command);
+  console.log('RECEIVED COMMAND: ', senderId);
 
   if (command == '+room') {
     contextuals.roomId = this.dbActions.writeNewRoom(args[0]);
@@ -97,11 +97,14 @@ function parseAction(event) {
   /** CONTEXTUALS.ROOMID MUST BE SET BEFORE EXECUTING THESE **/
   switch (command) {
     case '+task':
-      console.log('PARSED ADD TASK ACTION');
-      this.dbActions.writeTask(contextuals.roomId, args[0], args[1]);
+      this.dbActions.writeTask(contextuals.roomId, args[0], args[1], function(err, res) {
+        sendText(senderId, 'Added task!');
+      });
       break;
     case '+expense':
-      this.dbActions.writeExpense(contextuals.roomId, args[0], args[1], 'Akshat');
+      this.dbActions.writeExpense(contextuals.roomId, args[0], args[1], 'Akshat', function(err, res) {
+        sendText(senderId, 'Added expense!');
+      });
       break;
     case '$details':
       this.dbActions.viewRoom(contextuals.roomId, function(err, doc) {

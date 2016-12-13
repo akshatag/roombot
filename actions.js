@@ -25,17 +25,14 @@ var make = function(db) {
     });
   }
 
-  actions.writeTask = function(roomId, name, assignee) {
-    console.log('WRITING TASK: ', name, assignee);
+  actions.writeTask = function(roomId, name, assignee, callback) {
     var task = {room: roomId, title: name, assignee: assignee};
-    this.db.collection('tasks').insert([task], function(err, res) {
-    });
+    this.db.collection('tasks').insert([task], callback);
   }
 
-  actions.writeExpense = function(roomId, name, amount, author) {
+  actions.writeExpense = function(roomId, name, amount, author, callback) {
     var expense = {room: roomId, title: name, amount: amount, author: author};
-    this.db.collection('expenses').insert([expense], function(err, res) {
-    });
+    this.db.collection('expenses').insert([expense], callback);
   }
 
   actions.getTasks = function(roomId, callback) {
