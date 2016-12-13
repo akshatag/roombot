@@ -37,14 +37,14 @@ var make = function(db) {
     this.db.collection('expenses').insert([expense], callback);
   }
 
-  actions.getSenderId(name) = function(name, callback) {
+  actions.getSenderId = function(name, callback) {
     this.db.collection('roommates').findOne({name: name}, function(err, doc){
       var senderId = doc.senderId;
       callback(senderId);
     });
   }
 
-  actions.getUserName(id) = function(senderId, callback) {
+  actions.getUserName = function(senderId, callback) {
     this.db.collection('roommates').findOne({senderId: senderId}, function(err, doc){
       var senderId = doc.name;
       callback(name);
