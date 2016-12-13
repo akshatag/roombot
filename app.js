@@ -163,7 +163,6 @@ function roomsAttachment(rooms) {
   return attachment;
 }
 
-
 function sendTasksAttachment(senderId, tasks) {
   var attachment = {
     type: 'template',
@@ -227,7 +226,7 @@ function sendExpensesAttachment(senderId, expenses) {
         expense.buttons.push({
           title: 'Remove',
           type: 'postback',
-          payload: 'expense' + element._id
+          payload: 'expense ' + element._id
         });
       }
 
@@ -237,18 +236,6 @@ function sendExpensesAttachment(senderId, expenses) {
       }
     });
   });
-}
-
-function buttonAttachment(text, buttons) {
-  var attachment = {
-    type: 'template',
-    payload: {
-      template_type : 'button',
-      text: text,
-      buttons: buttons
-    }
-  }
-  return attachment;
 }
 
 /** TEST IF THE APP IS UP **/
