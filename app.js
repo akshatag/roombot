@@ -174,7 +174,7 @@ function tasksAttachment(senderId, tasks) {
     }
   }
 
-  tasks.forEach(function(element) {
+  tasks.forEach(function(element, idx, arr) {
     this.dbActions.getUserName(element.assignee, function(name) {
       var task = {
         title: element.title,
@@ -198,11 +198,11 @@ function tasksAttachment(senderId, tasks) {
 
       console.log('PUSHING TASK: ', JSON.stringify(task));
       attachment.payload.elements.push(task);
+      if(attachment.payload.elements.length == arr.length){
+        return attachment;
+      }
     });
   });
-
-  console.log('ATTACHMENT ', attachment);
-  return attachment;
 }
 
 function expensesAttachment(senderId, expenses) {
