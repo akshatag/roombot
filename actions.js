@@ -8,11 +8,13 @@ var make = function(db) {
     this.db.collection('roommates').findOne({senderId: senderId}, function(res, doc) {
       var rooms = doc.rooms;
       var results = [];
+      console.log('HERE ARE THE ROOMS ', rooms);
       rooms.forEach(function(element, idx, arr) {
         this.db.collection('rooms').findOne({_id: ObjectId(element)}, function(res, doc) {
           results.push(doc);
         });
         if (results.length == arr.length) {
+          console.log('WE MADE IT');
           callback(results);
         }
       });
