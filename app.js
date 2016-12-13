@@ -125,7 +125,7 @@ function parseAction(event) {
         if(expenses == null || expenses.length == 0) {
           sendText(senderId, 'No Expenses');
         }
-        sendExpensesAttachment(senderId, expenses));
+        sendExpensesAttachment(senderId, expenses);
       });
       break;
     default:
