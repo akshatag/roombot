@@ -219,7 +219,7 @@ function sendExpensesAttachment(senderId, expenses) {
     this.dbActions.getUserName(element.author, function(name) {
       var expense = {
         title: element.title,
-        subtitle: "$" + element.amount,
+        subtitle: "$" + element.amount + ' paid by ' + name,
         buttons: []
       };
 
