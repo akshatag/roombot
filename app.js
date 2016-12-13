@@ -224,7 +224,7 @@ function sendExpensesAttachment(senderId, expenses) {
       };
 
       if(senderId == element.author){
-        task.buttons.push({
+        expense.buttons.push({
           title: 'Remove',
           type: 'postback',
           payload: 'expense' + element._id
