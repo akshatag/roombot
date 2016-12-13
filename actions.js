@@ -4,7 +4,7 @@ var make = function(db) {
 
   var actions = {db: db};
 
-  actions.allRooms = function(callback) {
+  actions.allRooms = function(senderId, callback) {
     this.db.collection('roommates').findOne({senderId: senderId}, function(res, doc) {
       var rooms = doc.rooms;
       var results = [];

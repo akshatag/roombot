@@ -90,7 +90,7 @@ function parseAction(event) {
     return;
   }
   else if (command == '$rooms') {
-    this.dbActions.allRooms(function(results) {
+    this.dbActions.allRooms(senderId, function(results) {
       sendAttachment(senderId, roomsAttachment(results));
     });
     return;
