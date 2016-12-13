@@ -193,7 +193,7 @@ function sendTasksAttachment(senderId, tasks) {
         buttons: []
       };
 
-      if (false && senderId == element.assignee) {
+      if (senderId == element.assignee) {
         task.buttons.push({
           title: 'Done',
           type: 'postback',
